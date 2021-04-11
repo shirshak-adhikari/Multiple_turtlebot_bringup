@@ -1,0 +1,25 @@
+<launch>
+  <arg name="multi_robot_name" default=""/>
+  <arg name="set_lidar_frame_id" default="base_scan"/>
+  <arg name="robot_num" default="1"/>
+  <arg name="ip_add" default="100"/>
+
+<machine name="$(eval str('192.168.0.') + str(arg('ip_add')))" address="$(eval '192.168.0.' + str(arg('ip_add')))" env-loader="/home/pi/catkin_ws/env.sh" user="pi" default="true"/>
+
+<group ns="$(eval 'node' + str(arg('robot_num')))">
+        <include file="$(find turtlebot3_bringup)/launch/turtlebot3_core.launch" >
+        <arg name="multi_robot_name" value="$(arg multi_robot_name)"/>
+        </include>
+
+        <include file="$(find turtlebot3_bringup)/launch/turtlebot3_lidar.launch" >
+        <arg name="set_frame_id" value="$(arg set_lidar_frame_id)"/>
+        </include>`
+
+        <node machine="$(eval str('192.168.0.') + str(arg('ip_add')))" pkg="turtlebot3_bringup" type="turtlebot3_diagnostics" name="turtlebot3_diagnostics" output="screen"/>
+</group>
+
+<include file ="$(find turtlebot3_bringup)/launch/turtlebot3_robot_remote.launch" if="$(eval arg('robot_num') - 1 > 0)">
+  <arg name="robot_num" value="$(eval arg('robot_num')-1)"/>
+  <arg name="ip_add" value="$(eval arg('ip_add')-1)"/>
+</include>
+</launch>
