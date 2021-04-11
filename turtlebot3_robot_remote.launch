@@ -1,8 +1,10 @@
 <launch>
   <arg name="multi_robot_name" default=""/>
   <arg name="set_lidar_frame_id" default="base_scan"/>
-  <arg name="robot_num" default="1"/>
+  <arg name="robot_num" default="1"/> 
+  <!-- robot_num must be the number of robots that you want to launch -1 -->
   <arg name="ip_add" default="100"/>
+  <!-- ip_add should be continuous and the value of highest ip_add needs to be passed on -->
 
 <machine name="$(eval str('192.168.0.') + str(arg('ip_add')))" address="$(eval '192.168.0.' + str(arg('ip_add')))" env-loader="/home/pi/catkin_ws/env.sh" user="pi" default="true"/>
 
